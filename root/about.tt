@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>話題のつぶやきTop10</title>
+        <link rel="stylesheet" href="/static/js/jquery.mobile/jquery.mobile-1.0a4.1.min.css" />
+        <link rel="stylesheet" href="/static/css/rank.css" />
+        <script src="/static/js/jquery/jquery-1.5.2.min.js"></script>
+        <script src="/static/js/jquery.mobile/jquery.mobile-1.0a4.1.min.js"></script>
+    </head>
+    <body>
+        <div id="opening" data-role="page">
+            <div data-role="header">
+                <p class="text-center">話題のつぶやきTop10</p>
+            </div>
+
+            <div data-role="content">
+                <h3 class="text-center">サービス説明</h3>
+                <p>1. <b>自分のつぶやき</b> で話題になったつぶやきってありますよね。</p>
+                <p class="text-center"><img src="/static/images/outline/outline1.png" class="thumb-outline" /></p>
+                <p>2. そんな、<b>話題のつぶやきをTop10までまとめるサービス</b>です。</p>
+                <p class="text-center"><img src="/static/images/outline/outline2.png" class="thumb-outline" /></p>
+                <p>3. Top10までまとめられた <b>つぶやきを友達に知らせる</b>ことができるので、ご活用ください。</p>
+                <p class="text-center"><img src="/static/images/outline/outline3.png" class="thumb-outline" /></p>
+                <p>4. 本サービスは、株式会社ミクシィが提供する mixi Graph API を利用して作られているため、<b>mixi上でサービスを許可する必要があります。</b></p>
+                <p class="text-center"><img src="/static/images/outline/m_balloon_icon.png" style="width: 100px;" /></p>
+                <a data-role="button" href="/?oauth_mixi=1&id=[% id %]" rel="external" data-icon="plus">サービスを利用する</a>
+                <p>※PCとスマートフォンに対応しています。</p>
+            </div>
+            <p class="text-center">powerd by <a href="http://twitter.com/tkazuki">@tkazuki</a></p><br />
+            <div data-role="content" class="text-center">
+                <p>応援イイネ！はこちら</p>
+                <iframe scrolling="no" frameborder="0" allowTransparency="true" style="overflow:hidden; border:0; width:250px; height:80px" src="http://plugins.mixi.jp/favorite.pl?href=http%3A%2F%2Femerges.to&service_key=bfb652845abcee29aaa4d0ad2d5fda06f3c0a911&show_faces=true&width=250"></iframe>
+            </div>
+        </div>
+        <div id="about1" data-role="page">
+            <div data-role="header">
+                <p class="text-center">サービス概要</p>
+            </div>
+
+            <div data-role="content">
+                <h3>興味を持ってくれてありがとう！</h3>
+                <p>最初に訪れたときに表示された画面を元に詳しく説明します。</p>
+                <p>1. <b>自分のつぶやき</b> で話題になったつぶやきってありますよね。</p>
+                <p>流れてしまうつぶやきの中でも、旬だった美味しいつぶやきを抽出してみたら、それが友達との話題になるかと思って作ってみました。</p>
+                <p class="text-center"><img src="/static/images/outline/outline1.png" class="thumb-outline" /></p>
+                <p>2. そんな、<b>話題のつぶやきをTop10までまとめるサービス</b>です。</p>
+                <p>自分のつぶやいた中の最新200件のつぶやきを「コメント*3点」+「イイネ！*1点」でランキング化しています。</p>
+                <p class="text-center"><img src="/static/images/outline/outline2.png" class="thumb-outline" /></p>
+                <p>3. Top10までまとめられた <b>つぶやきを友達に知らせる</b>ことができるので、ご活用ください。</p>
+                <p>今回は自分（マイミク1人）のつぶやきだけだけど、友達複数人の中で話題のつぶやきとかも作ってみたい。</p>
+                <p class="text-center"><img src="/static/images/outline/outline3.png" class="thumb-outline" /></p>
+                <p>4. 本サービスは、株式会社ミクシィが提供する mixi Graph API を利用して作られているため、<b>mixi上でサービスを許可する必要があります。</b></p>
+                <p>mixi Graph APIっていう機能を使うとユーザが許可した範囲でmixiの情報が外部で使えます。使う際にはユーザの決めている情報の公開範囲を厳守しなくてはいけません。本サービスでは、自分とマイミクの話題のつぶやきしか見ることはできません。</p>
+                <p class="text-center"><img src="/static/images/outline/m_balloon_icon.png" style="width: 100px;" /></p>
+                <p>次のページで本サービスにおけるコミュニケーションをどうデザインしたかご説明します。</p>
+                <a data-role="button" href="#about2">コミュニケーションデザイン</a>
+            </div>
+            <p class="text-center">powerd by <a href="http://twitter.com/tkazuki">@tkazuki</a></p><br />
+            <div data-role="content" class="text-center">
+                <p>応援イイネ！はこちら</p>
+                <iframe scrolling="no" frameborder="0" allowTransparency="true" style="overflow:hidden; border:0; width:250px; height:80px" src="http://plugins.mixi.jp/favorite.pl?href=http%3A%2F%2Femerges.to&service_key=bfb652845abcee29aaa4d0ad2d5fda06f3c0a911&show_faces=true&width=250"></iframe>
+            </div>
+        </div>
+        <div id="about2" data-role="page">
+            <div data-role="header">
+                <p class="text-center">コミュニケーションデザイン</p>
+            </div>
+
+            <div data-role="content">
+                <h3>話題のタネ</h3>
+                <p>mixiのつぶやきでは、「占い」や「検定」アプリが流行っています。アプリからネタを拾ってきて、みんなの話題にすると言ったコミュニケーションですね。本サービスでも同じく、友達と話題になるようなネタを提供するコミュニケーションの形をデザインしています。</p>
+                <p>ネタを作るにあたっては、<b>自分たちのリアルな生きた面白い情報をまとめました。</b></p>
+                <p class="text-center"><img src="/static/images/outline/outline_about1.png" class="thumb-outline" /></p>
+                <h3>鉄は熱いうちに打て</h3>
+                <p>単純にネタを提供するだけではなく、<b>ネタを見たその瞬間に、すぐにコメント、イイネ！など行動に移せる</b>ような工夫をしました。また、Top10のそれぞれのつぶやきにも、「今更だけどコメント」することができます。コメントされた方は「おぉ！びっくり、だけど嬉しい」という風になるかもしれませんね。<b>ちょっと旬が過ぎたネタでも切り口を変えれば再び温めることができます。</b></p>
+                <h3>mixi内と外部のコミュニケーション</h3>
+                <p>本サービス内で「コメントする」とmixi内の該当つぶやきにコメントが投稿されます。逆にmixi内で本サービスに関係するつぶやきにコメントすれば、本サービス内に反映されます。mixiのつぶやき機能の一部を切り抜いて<b>情報の見せ方を変えただけのコミュニケーションツール</b>です。</p>
+                <p class="text-center"><img src="/static/images/outline/outline_about3.png" class="thumb-outline" /></p>
+
+                <p>次のページでは、開発環境などエンジニア向けの情報を提供します。</p>
+                <a data-role="button" href="#about3">開発環境</a>
+                <p>※アイコンやサイト全体のデザインを可愛く統一感を出してくれるデザイナーさん募集中。個人の趣味で作ってるので、給与でないです（笑）趣味で手伝ってくれる方いましたらtwitter:@tkazukiまで。</p>
+            </div>
+            <p class="text-center">powerd by <a href="http://twitter.com/tkazuki">@tkazuki</a></p><br />
+            <div data-role="content" class="text-center">
+                <p>応援イイネ！はこちら</p>
+                <iframe scrolling="no" frameborder="0" allowTransparency="true" style="overflow:hidden; border:0; width:250px; height:80px" src="http://plugins.mixi.jp/favorite.pl?href=http%3A%2F%2Femerges.to&service_key=bfb652845abcee29aaa4d0ad2d5fda06f3c0a911&show_faces=true&width=250"></iframe>
+            </div>
+        </div>
+        <div id="about3" data-role="page">
+            <div data-role="header">
+                <p class="text-center">開発環境</p>
+            </div>
+
+            <div data-role="content">
+                <h3>クライアント</h3>
+                <p>jQuery Mobile：オススメの参考サイトに飛びます <a href="http://yst.web.infoseek.co.jp/jquerymobile/" rel="external">jQuery Mobile [基本編]</a>, <a href="http://labs.gree.jp/blog/2011/04/3282/" rel="external">1時間で携帯サイトをスマートフォン対応にする方法 | GREE Engineers&#039; Blog</a>, <a href="http://www.zumix.jp/jQueryMobile/" rel="external">jQuery Mobile いいネ Index</a>, <a href="http://memono.blogspot.com/2009/02/httpsemooh.html" rel="external">なんとなく:jQuery適当メモ</a></p>
+                <p>基本的に本サイトも含めてソースを見るで、見れちゃうので、ソースを見て活用してください。JSやっつけ仕事なので直します・・・。</p>
+                <h3>サーバ</h3>
+                <p>Amazon EC2(シンガポール)、Amazon Linux、Perl(Catalyst)、memcached、mixi Graph API用独自フレームワーク(Mixi::Graph): 自前で情報を持たない方針で実装しました（永続化しない）。memcachedはセッション管理とランキング生成コスト削減のための数分キャッシュに活用</p>
+                <h3>企画</h3>
+                <p><a href="http://cacoo.com/" rel="external">Cacco</a>でワイヤーフレームデザイン、ラフデザイン、コミュニケーションデザイン図を作成しました。他にもKeynoteで図つくったり。</p>
+                <h3>その他</h3>
+                <p>Keynoteで作った図を軽量化する際に、<a href="http://www.vector.co.jp/soft/win95/art/se063024.html" rel="external">Padie</a>を使いました。画像を劣化させずに減色できて便利です。</p>
+                <h3>開発期間</h3>
+                <p>フロント側やデザインなどはGW中の休日を使って72hでした。mixi Graph APIのライブラリ開発とサーバ側構築は地震時の自宅待機期間などを使って108hぐらい。</p>
+
+                <h3>まとめ</h3>
+                <p>mixi Graph APIは、意外と人気がないけど、ユーザが2000万人以上いるってのは魅力的です。コミュニケーションのキッカケになるツールを今後も作ってこうと思います。</p>
+                <a data-role="button" href="/" rel="external">自分のランキングへ戻る</a>
+                <p>※アイコンやサイト全体のデザインを可愛く統一感を出してくれるデザイナーさん募集中。個人の趣味で作ってるので、給与でないです（笑）趣味で手伝ってくれる方いましたらtwitter:@tkazukiまで。</p>
+            </div>
+            <p class="text-center">powerd by <a href="http://twitter.com/tkazuki">@tkazuki</a></p><br />
+            <div data-role="content" class="text-center">
+                <p>応援イイネ！はこちら</p>
+                <iframe scrolling="no" frameborder="0" allowTransparency="true" style="overflow:hidden; border:0; width:250px; height:80px" src="http://plugins.mixi.jp/favorite.pl?href=http%3A%2F%2Femerges.to&service_key=bfb652845abcee29aaa4d0ad2d5fda06f3c0a911&show_faces=true&width=250"></iframe>
+            </div>
+    </body>
+</html>

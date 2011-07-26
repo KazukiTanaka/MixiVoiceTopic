@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>話題のつぶやきTop10</title>
+        <link rel="stylesheet" href="/static/js/jquery.mobile/jquery.mobile-1.0a4.1.min.css" />
+        <link rel="stylesheet" href="/static/css/rank.css" />
+        <script src="/static/js/jquery/jquery-1.6.min.js"></script>
+        <script src="/static/js/jquery.mobile/jquery.mobile-1.0a4.1.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+        <script id="statusesTemplate" type="text/x-jquery-tmpl">
+{{if photo.length}}
+    <img src="${photo[0].image_url}" class="thumb-big" />
+{{/if}}
+<ul data-inset="true">
+    <li style="padding: 10px 15px .6em 90px;" class="list-item">
+        <img src="${user.profile_image_url}" class="ui-li-thumb thumb-small" />
+        <h3 style="white-space: normal;">${text}</h3>
+        <div id="favoritesImages" data-role="controlgroup" data-type="horizontal">
+        {{each favorites}}
+            <img src="{{if profile_image_url}}${profile_image_url}{{else}}/static/images/icon/friend_of_friend.png{{/if}}" class="favorite-thumb" />
+        {{/each}}
+        </div>
+        <p class="text-right clearfix li-p-no-short">イイネ！(${favorite_count}) コメント(${reply_count})</p>
+    </li>
+</ul>
+        
+<div id="post_status_comment_area" class="text-center">
+    <input type="button" id="statusFavoriteButton" data-inline="true" value="イイネ！"{{if favorited || user.id == myID}} disabled="disabled"{{/if}} />
+    <a data-inline="true" data-icon="false" data-role="button" href="#post_voice_comment" data-icon="grid" data-rel="dialog" data-transition="fade">コメントする</a>
+</div>
+
+<ul data-inset="true">
+    {{each replies}}
+    <li style="padding: 10px 15px .6em 90px;" class="list-item">
+        <img src="{{if user.profile_image_url}}${user.profile_image_url}{{else}}/static/images/icon/friend_of_friend.png{{/if}}" class="ui-li-thumb thumb-small" />
+        <p class="li-p-no-short">${text}</p>
+        <p class="text-right li-p-no-short">${user.screen_name}</p>
+    </li>
+    {{/each}}
+</ul>
+    </script>
+    <script id="timelineTemplate" type="text/x-jquery-tmpl">
+<ul data-inset="true">
+    <li data-role="list-divider">{{if $item.mode == 'my'}}[% displayName %]さん<br /><p class="text-right">話題のつぶやきTop10</p>{{else}}友達みんなに話題のつぶやきTop20{{/if}}</li>
+    {{if contents.length}}
+        {{each contents}}
+            <li class="list-item">
+            {{if photo.length}}
+                <img id="showImage${$index + 1}" src="${photo[0].thumbnail_url}" class="ui-li-thumb thumb-small" />
+            {{/if}}
+            <a href="#show_statuses" id="showStatuses${$index + 1}" style="padding: 10px 40px .6em 90px;">
+                <p class="li-p-no-short">${text}</p><br /><br />
+                {{if $item.mode == 'friends'}}
+                <p class="text-right li-p-no-short"><img src="${user.profile_image_url}" class="friends-timeline-thumb" /></p>
+                <p class="text-right li-p-no-short"><b>${user.screen_name}</b>さん</p>
+                {{/if}}
+                <p class="text-right clearfix li-p-no-short">イイネ！(${favorite_count}) コメント(${reply_count})</p>
+            </a>
+        </li>
+        {{/each}}
+    {{else}}
+    <li>最近、つぶやいてませんね。</li>
+    {{/if}}
+</ul>
+    </script>
+    <script>
+    var myID           = '[% my_id %]';
+    var myThumbnailUrl = '[% my_thumbnailUrl %]';
+    var _postStatusID   = '';
+    var _statusAreaID   = '';
+    $(document).ready(function() {
+        $(function() {
+            $.mobile.pageLoading();
+            if ('[% status_id %]') {
+                createStatuses('#myStatus', '[% status_id %]');
+            }
+            else {
+                var html = '<ul data-inset="true">';
+                html += '<li style="padding: 10px 15px .6em 90px;" class="list-item">';
+                html += '<img src="[% thumbnailUrl %]" class="ui-li-thumb thumb-small" />';
+                html += '<h3 style="white-space: normal;">[% displayName %]の話題のつぶやきを集めてみたよ。</h3>';
+                html += '</li>';
+                html += '</ul>';
+                $("#myStatus").append(html);
+                $("#myStatus > ul").listview();
+            }
+            $.getJSON('/voice/get/timeline', { id: '[% friend_id %]' }, function(json) {
+                createTimeline('my', json);
+                $.mobile.pageLoading(true);
+            });
+        });
+        
+        $("#getFriendsTimeline").live("click", function(){
+            $.mobile.pageLoading();
+            $("#myStatus").empty();
+            $("#buttonDiv").empty();
+            $("#timelineRanking").empty();
+            $.getJSON('/voice/get/friends_timeline', function(json) {
+                $("#buttonDiv").append('<a id="make_ranking_button" data-inline="true" data-role="button" href="#make_ranking" data-icon="star" data-rel="dialog" data-transition="fade">友達みんなに伝える</a>').page();
+                createTimeline('friends', json);
+                $.mobile.pageLoading(true);
+            });
+        });
+        
+        
+        $("#postVoice").live("click", function(){
+            $.mobile.pageLoading();
+            var post_status = $("#post_status").val();
+            if ( !post_status ) {
+                return;
+            }
+            $.getJSON('/voice/post/statuses', { status: post_status }, function(data, status) {
+                createStatuses('#myStatus', data.contents.id);
+                $.mobile.pageLoading(true);
+                $(".ui-dialog").dialog("close");
+            });
+        });
+        
+        $("#postComment").live("click", function(){
+            $.mobile.pageLoading();
+            var post_comment = $("#post_comment").val();
+            if ( !post_comment ) {
+                return;
+            }
+            $.getJSON('/voice/post/replies', { text: post_comment, post_id: postStatusID() }, function(data, status) {
+                createStatuses(statusAreaID(), postStatusID());
+                $.mobile.pageLoading(true);
+                $(".ui-dialog").dialog("close");
+            });
+        });
+    });
+    function postStatusID(statusID) {
+        if(statusID) {
+            _postStatusID = statusID;
+        }
+        return _postStatusID;
+    }
+    function statusAreaID(statusArea) {
+        if(statusArea) {
+            _statusAreaID = statusArea;
+        }
+        return _statusAreaID;
+    }
+
+    function createTimeline(mode, json) {
+        $("#timelineRanking").empty();
+        $("#timelineTemplate").tmpl( json,
+            {
+                mode: mode
+            }
+        ).page().appendTo("#timelineRanking");
+        $.each(json.contents, function(i) {
+            var Num = i + 1;
+            if (this.photo.length) {
+                addEventShowImage(this.photo[0].image_url, 'showImage'+Num); 
+            }
+            addEventShowStatuses(this.id, 'showStatuses'+Num);
+        });
+
+        $("#timelineRanking > ul").listview();
+    }
+ 
+    function showImage(url) {
+        $.mobile.pageLoading();
+        $('#show_image_area').empty();
+        $('<img />')
+            .attr('src', url)
+            .addClass('thumb-big')
+            .appendTo('#show_image_area')
+            .load(function () {
+                $.mobile.pageLoading(true);
+                $.mobile.changePage("#show_image", "pop");
+            })
+            .error(function () {
+                $.mobile.pageLoading(true);
+                jQuery(this).remove();
+            });
+    }
+    function addEventShowImage(imageUrl, imageID){ 
+        $('#'+imageID).die();
+        $('#'+imageID).live('click', function(){showImage(imageUrl)});
+    }
+    function addEventShowStatuses(postID, statusesID){
+        $('#'+statusesID).die();
+        $('#'+statusesID).live('click', function(){
+            $.mobile.pageLoading();
+            createStatuses('#subStatusArea', postID);
+        }); 
+    }
+    function createStatuses(targetID, postID) {
+        $(targetID).empty();
+        statusAreaID(targetID);
+        postStatusID(postID);
+        $.mobile.pageLoading();
+            
+        $.getJSON('/voice/get/statuses', { post_id: postID }, function(res) {
+            if (!res.contents) {
+                return;
+            }
+            $('#statusesTemplate').tmpl(res.contents).page().appendTo(targetID);
+            if (statusAreaID() == '#myStatus') {
+                $("#commentTargetName").text('[% displayName %] さんの「話題のつぶやきTop10」にコメントを書こう！');
+            }
+            else {
+                $("#commentTargetName").text('話題のつぶやきにコメントしよう！');
+            }$
+            ("#statusFavoriteButton").die();
+            $("#statusFavoriteButton").live('click', function() {
+                postFavorite(postID, function(json){
+                    $("#statusFavoriteButton").button('disable');
+                    $("#favoritesImages").append('<img src="'+ myThumbnailUrl +'" class="favorite-thumb" />');
+                });
+            });
+            $(targetID+" > ul").listview();
+            $.mobile.pageLoading(true);
+        });
+    }
+    function postFavorite(postID, callback){
+        $.mobile.pageLoading();
+        $.getJSON('/voice/post/favorites', { post_id: postID }, function(json) {
+            if (callback) {
+                callback(json);
+            }
+            $.mobile.pageLoading(true);
+        });
+    }
+    </script>
+
+    </head>
+    <body>
+        <div id="home" data-role="page">
+            <div data-role="header">
+                [% displayName %]さん
+                <p class="text-right" style="font-size: 10px">話題のつぶやきTop10</p>
+            </div>
+            <div data-role="navbar">
+                <ul>
+                    <li><a data-theme="c" href="/" rel="external" data-icon="home" data-transition="fade">自分のTop10</a></li>
+                    <li><a data-theme="c" href="#" id="getFriendsTimeline" data-icon="check" data-transition="fade">友達のTop20</a></li>
+                </ul>
+            </div>
+            <div id="myStatus" data-role="content"></div>
+            [% IF friend_id && status_id %]
+            <div id="buttonDiv" class="text-center" style="font-size: 12px;">
+                <a id="make_ranking_button" data-inline="true" data-role="button" href="/" rel="external" data-icon="star" data-transition="fade">ランキングをつくる</a>
+            </div>
+            [% ELSE %]
+            <div id="buttonDiv" class="text-center">
+                <a id="make_ranking_button" data-inline="true" data-role="button" href="#make_ranking" data-icon="star" data-rel="dialog" data-transition="fade">友達みんなに伝える</a>
+            </div>
+            [% END %]
+            <div id="timelineRanking" data-role="content"></div>
+            <p class="text-center">powerd by <a href="http://twitter.com/tkazuki">@tkazuki</a></p><br />
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="http://mixi.jp" rel="external" data-icon="back" data-transition="fade">mixi</a></li>
+                        <li><a href="/about#about1" rel="external" data-icon="info" data-transition="fade">About me</a></li>
+                        <li><a href="/" rel="external" data-icon="home" data-transition="fade">Home</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="post_voice_comment" data-role="page">
+            <div data-role="header"> 
+                <h5>コメントする</h5>
+            </div>
+            <div data-role="content">
+                <p id="commentTargetName"></p>
+                <textarea cols="40" rows="8" maxlength='150' id="post_comment" style="height: 130px"></textarea>
+                <div class="text-center" style="font-size: 10px;">
+                    <a href="#" data-role="button" data-theme="a" data-inline="true" id="postComment">投稿</a>
+                    <a href="#" data-role="button" data-rel="back" data-inline="true">キャンセル</a>
+                </div>
+            </div> 
+        </div>
+        <div id="make_ranking" data-role="page">
+            <div data-role="header"> 
+                <h5>つぶやく</h5>
+            </div>
+            <div data-role="content">
+                <h3>[% userName %]さん自身の「話題のつぶやきTop10」をつぶやこう！</h3>
+                <textarea cols="40" rows="8" maxlength='150' id="post_status" style="height: 130px">自分の「話題のつぶやきTop10」つくってみました [% my_url %]</textarea>
+                <div class="text-center" style="font-size: 10px;">
+                    <a href="#" data-role="button" data-theme="a" data-inline="true" id="postVoice">つぶやく</a>
+                    <a href="#" data-role="button" data-rel="back" data-inline="true">キャンセル</a>
+                </div>
+            </div> 
+        </div>
+        <div id="show_statuses" data-role="page" data-back-btn-text="戻る">
+            <div data-role="header"> 
+                <h1>つぶやきを表示</h1>
+            </div>
+            <div data-role="content" id="subStatusArea"></div> 
+            <div class="text-center">
+                <a href="#" data-role="button" data-rel="back" data-inline="true">戻る</a>
+            </div>
+        </div>
+        <div id="show_image" data-role="page" data-back-btn-text="閉じる">
+            <div data-role="header"> 
+                <h1>画像を表示</h1>
+            </div>
+            <div data-role="content" id="show_image_area">
+            </div> 
+        </div>
+    </body>
+</html>

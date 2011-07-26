@@ -1,0 +1,51 @@
+.thumb-small
+{
+    float: left;
+    margin: 5px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid #CCCCCC;
+    background: #F5F5F5;
+}
+.thumb-big
+{
+    width: 300px;
+}
+.favorite-thumb
+{
+    width: 40px;
+    height: 40px;
+}
+.friends-timeline-thumb
+{
+    width: 40px;
+    height: 40px;
+}
+.thumb-outline
+{
+    margin: 5px;
+    width: 250px;
+    border: 2px solid #CCCCCC;
+    background: #F5F5F5;
+}
+.list-item
+{
+    min-height:90px;
+}
+.clearfix
+{
+    clear:both;
+}
+.text-center 
+{
+    text-align: center;
+}
+.text-right
+{
+    text-align: right;
+    margin-top: auto;
+}
+.li-p-no-short
+{
+    white-space: normal;
+}
